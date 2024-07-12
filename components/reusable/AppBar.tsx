@@ -10,7 +10,7 @@ async function AppBar() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="z-20 mr-20 h-20 w-full mt-0 rounded-b-xl bg-black/10 backdrop-blur-3xl fixed">
+    <div className="z-20 mr-20 h-20 w-full mt-0 rounded-b-xl bg-black/10 backdrop-blur-xl fixed">
       <div className=" text-white flex h-full md:px-6  px-5 p-1 gap-10 justify-between items-center mr-2 ">
         <Link href={"/"}>
           <div className=" cursor-pointer  text-yellow-500"><Lightbulb className='w-20 h-10'/></div>

@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 function GoogleLoginButton() {
 
         const handleSignIn = async () => {
-          const result = await signIn("google", { callbackUrl: "/" });
+          const result = await signIn("google", { callbackUrl: "/ideas" });
           if (result?.error) {
             console.error("Failed to sign in", result.error);
             return;
