@@ -8,15 +8,15 @@ import { Textarea } from "./ui/textarea";
 import model from "@/lib/googleClient";
 
 function IdeaForm() {
-  const [ideaTitle, setIdeaTitle] = useState("Project Idea Generator");
+  const [ideaTitle, setIdeaTitle] = useState("");
   const [techStack, setTechStack] = useState(
-    "NextJs, MongoDb, TailwindCSS, GenAi"
+    ""
   );
   const [targetAudience, setTargetAudience] = useState(
-    "Students , Entrepreneurs"
+    ""
   );
   const [ideaDescription, setIdeaDescription] = useState(
-    "Describe your idea here"
+    ""
   );
   const [generatedIdea, setGeneratedIdea] = useState<any>(null); // Initialize as null or an empty object
 
