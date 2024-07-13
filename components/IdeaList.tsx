@@ -34,12 +34,12 @@ async function IdeaList({ session }: any) {
             <h2 className="text-2xl font-bold mb-4">Your Previous Ideas</h2>
             <div className="grid gap-4">
               {res.length > 0 ? (
-                res.map((idea, index) => (
-                  <Link
+                res.map((idea) => (
+                  <Link key={idea._id} 
                     href={`/ideas/${idea._id}`}
                     className="text-sm font-medium text-primary"
                   >
-                    <Card key={idea._id} className="hover:bg-gray-900">
+                    <Card className="hover:bg-gray-900">
                       <CardHeader>
                         <CardTitle>{idea.title}</CardTitle>
                         <CardDescription>{idea.description}</CardDescription>
