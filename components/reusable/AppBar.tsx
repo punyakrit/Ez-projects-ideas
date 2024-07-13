@@ -20,10 +20,10 @@ async function AppBar() {
             <Link href="/">Home</Link>
           </div>
           <div className="transition duration-500 text-white/50 hover:cursor-pointer hover:text-white ">
-            <Link href="/about">About</Link>
+            <Link href="/ideas">Ideas-Section</Link>
           </div>
           <div className="transition duration-500 text-white/50 hover:cursor-pointer hover:text-white ">
-            <Link href="/contact">Contact</Link>
+            <Link href="/generate">Take-A-Challenge</Link>
           </div>
          
           
