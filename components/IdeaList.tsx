@@ -17,6 +17,15 @@ async function IdeaList({ session }: any) {
   const res = await UserIdeas.find({ owner: session.user.email as string });
   console.log("data" + res);
 
+  const formatDate = (date: Date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto py-12 md:py-16">
       <div className="px-4 md:px-6">
@@ -30,12 +39,16 @@ async function IdeaList({ session }: any) {
                     href={`/ideas/${idea._id}`}
                     className="text-sm font-medium text-primary"
                   >
-                    <Card key={index} className="hover:bg-gray-900">
+                    <Card key={idea._id} className="hover:bg-gray-900">
                       <CardHeader>
                         <CardTitle>{idea.title}</CardTitle>
                         <CardDescription>{idea.description}</CardDescription>
                       </CardHeader>
-                      <CardFooter className="justify-end"></CardFooter>
+                      <CardFooter className="justify-end">
+                        <span className="text-sm text-muted-foreground">
+                          Created on: {formatDate(idea.createdAt)}
+                        </span>
+                      </CardFooter>{" "}
                     </Card>
                   </Link>
                 ))
