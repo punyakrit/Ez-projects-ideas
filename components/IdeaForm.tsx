@@ -6,19 +6,15 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import model from "@/lib/googleClient";
+import { toast } from "sonner";
+import { saveIdea } from "@/actions/saveIdeas";
 
-function IdeaForm() {
+function IdeaForm({ session }: any) {
   const [ideaTitle, setIdeaTitle] = useState("");
-  const [techStack, setTechStack] = useState(
-    ""
-  );
-  const [targetAudience, setTargetAudience] = useState(
-    ""
-  );
-  const [ideaDescription, setIdeaDescription] = useState(
-    ""
-  );
-  const [generatedIdea, setGeneratedIdea] = useState<any>(null); // Initialize as null or an empty object
+  const [techStack, setTechStack] = useState("");
+  const [targetAudience, setTargetAudience] = useState("");
+  const [ideaDescription, setIdeaDescription] = useState("");
+  const [generatedIdea, setGeneratedIdea] = useState<any>(null);
 
   const handleFormSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -95,9 +91,14 @@ function IdeaForm() {
       text = text.trim().replace(/^```json\s+|\s+```$/g, "");
 
       // Parse the JSON string and set generatedIdea state
-      setGeneratedIdea(JSON.parse(text));
+      const parsedIdea = JSON.parse(text);
+      setGeneratedIdea(parsedIdea);
 
-      console.log(text); // Log the parsed JSON object
+      const res = await saveIdea(session.user.email, parsedIdea);
+
+
+      toast.success(res.message);
+      console.log(parsedIdea); // Log the parsed JSON object
     } catch (error) {
       console.error("Error generating idea:", error);
     }
@@ -106,6 +107,7 @@ function IdeaForm() {
   return (
     <div className="w-full max-w-4xl mx-auto py-12 md:py-16 lg:py-20">
       <div className="px-4 md:px-6">
+
         <div>
           <h2 className="text-2xl font-bold mb-4">Generate New Idea</h2>
           <Card className="p-10">
