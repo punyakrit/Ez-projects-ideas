@@ -8,15 +8,15 @@ import { Textarea } from "./ui/textarea";
 import model from "@/lib/googleClient";
 
 function IdeaForm() {
-  const [ideaTitle, setIdeaTitle] = useState("Smart Home Automation");
+  const [ideaTitle, setIdeaTitle] = useState("Project Idea Generator");
   const [techStack, setTechStack] = useState(
-    "Internet of Things (IoT), Node.js, React"
+    "NextJs, MongoDb, TailwindCSS, GenAi"
   );
   const [targetAudience, setTargetAudience] = useState(
-    "Homeowners interested in tech"
+    "Students , Entrepreneurs"
   );
   const [ideaDescription, setIdeaDescription] = useState(
-    "Develop a smart home automation system that controls lighting, security, and appliances through a centralized app."
+    "Describe your idea here"
   );
   const [generatedIdea, setGeneratedIdea] = useState<any>(null); // Initialize as null or an empty object
 
@@ -177,9 +177,10 @@ function IdeaForm() {
             <div>
               <h4 className="text-lg font-semibold">Features:</h4>
               <ul className="list-disc pl-6 space-y-1">
-                {generatedIdea.features.map((feature: { name: string; description: string }, index: React.Key) => (
+                {generatedIdea.features.map((feature: { name: string; description: string, use_cases: string }, index: React.Key) => (
                   <li key={index}>
                     <strong>{feature.name}</strong>: {feature.description}
+                    <p>Use Cases : {feature.use_cases}</p>
                   </li>
                 ))}
               </ul>
