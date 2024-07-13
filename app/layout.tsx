@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AppBar from "@/components/reusable/AppBar";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppBar/><div className="">{children}</div></body>
+        <head>
+          <Script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-HYJDHR3L8V"
+          ></Script>
+          <Script id="google-analytics">
+            {`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HYJDHR3L8V');`}
+          </Script>
+        </head>
+        <AppBar />
+        <div className="">{children}</div>
+      </body>
     </html>
   );
 }
