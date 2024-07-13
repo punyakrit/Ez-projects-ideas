@@ -6,7 +6,7 @@ import { signIn } from 'next-auth/react';
 function SetUpButton() {
 
     const handleSignIn = async () => {
-        const result = await signIn("google", { callbackUrl: "/" });
+        const result = await signIn("google", { callbackUrl: "/ideas" });
         if (result?.error) {
           console.error("Failed to sign in", result.error);
           return;
