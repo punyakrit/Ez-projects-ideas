@@ -31,6 +31,8 @@ export default function RootLayout({
 
   gtag('config', 'G-HYJDHR3L8V');`}
           </Script>
+          <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1567175925424561"
+     crossOrigin="anonymous"></Script>
         </head>
         <AppBar />
         <div className="">{children}</div>
