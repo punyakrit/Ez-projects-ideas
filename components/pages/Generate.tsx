@@ -5,10 +5,43 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import model from "@/lib/googleClient";
 
+const frontendFrameworks = [
+  "Angular",
+  "Vue.js",
+  "Ember.js",
+  "Svelte",
+  "Backbone.js",
+  "jQuery",
+];
+
+const backendTechnologies = [
+  "Node.js",
+  "Express.js",
+  "Django",
+  "Flask",
+  "Ruby on Rails",
+  "ASP.NET",
+];
+
+const webTechnologies = ["HTML", "CSS", "JavaScript", "React", "Angular", "Vue.js"];
+
+const aiTechnologies = ["TensorFlow", "PyTorch", "Keras", "Scikit-Learn", "Pandas", "NumPy"];
+
+const audienceTypes = ["Consumers", "Businesses", "Developers", "Students", "Researchers", "Government"];
+
+const programmingLanguages = ["JavaScript", "Python", "Java", "C++", "C#", "Ruby"];
+
+const databases = ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Redis", "Cassandra"];
+
+const frameworks = ["React", "Angular", "Vue.js", "Django", "Flask", "Ruby on Rails"];
+
+const projectLevels = ["Easy Level Project", "Medium Level Project", "Hard Level Project", "Very Hard Level Project"];
+
 function Generate() {
   const [checkedItems, setCheckedItems] = useState([]);
   const [generatedIdea, setGeneratedIdea] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   
   const handleCheckboxChange = (event:any) => {
@@ -18,6 +51,7 @@ function Generate() {
     
   };
   const handleFormSubmit = async (event: { preventDefault: () => void }) => {
+    setError(false)
     event.preventDefault();
     setLoading(true);
 
@@ -82,12 +116,14 @@ function Generate() {
 
       // Parse the JSON string and set generatedIdea state
       const parsedIdea = JSON.parse(text);
+      console.log(parsedIdea); // Log the parsed JSON object
       setGeneratedIdea(parsedIdea);
 
      
-      console.log(parsedIdea); // Log the parsed JSON object
       setLoading(false);
+      // setCheckedItems([]);
     } catch (error) {
+      setError(true)
       setLoading(false);
       console.error("Error generating idea:", error);
     }
@@ -96,92 +132,25 @@ function Generate() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <h1 className="text-3xl font-bold mb-8">Project Planner</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Your Skills</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["JavaScript", "React", "Node.js", "CSS", "Python", "SQL"].map((skill, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`skill-${index + 1}`} value={skill} onClick={handleCheckboxChange} />
-                <Label htmlFor={`skill-${index + 1}`}>{skill}</Label>
-              </div>
-            ))}
-          </div>
+      <form onSubmit={handleFormSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <CheckboxGroup title="Frontend Frameworks" options={frontendFrameworks} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Backend Technologies" options={backendTechnologies} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Web Technologies" options={webTechnologies} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="AI/ML Technologies" options={aiTechnologies} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Audience Type" options={audienceTypes} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Programming Languages" options={programmingLanguages} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Databases" options={databases} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Frameworks" options={frameworks} onChange={handleCheckboxChange} />
+          <CheckboxGroup title="Project Level" options={projectLevels} onChange={handleCheckboxChange} />
         </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Web Technologies</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["HTML", "CSS", "JavaScript", "React", "Angular", "Vue.js"].map((tech, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`web-${index + 1}`} value={tech} onClick={handleCheckboxChange} />
-                <Label htmlFor={`web-${index + 1}`}>{tech}</Label>
-              </div>
-            ))}
-          </div>
+        <div className="mt-12">
+          {error && <p className="text-red-500 my-4">{"Something went wrong try again!!"}</p>}
+          <Button type="submit" disabled={loading}>
+            {loading ? "Generating..." : "Generate Random Idea"}
+          </Button>
         </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">AI/ML Technologies</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["TensorFlow", "PyTorch", "Keras", "Scikit-Learn", "Pandas", "NumPy"].map((ai, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`ai-${index + 1}`} value={ai} onClick={handleCheckboxChange} />
-                <Label htmlFor={`ai-${index + 1}`}>{ai}</Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Audience Type</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["Consumers", "Businesses", "Developers", "Students", "Researchers", "Government"].map((audience, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`audience-${index + 1}`} value={audience} onClick={handleCheckboxChange} />
-                <Label htmlFor={`audience-${index + 1}`}>{audience}</Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Programming Languages</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["JavaScript", "Python", "Java", "C++", "C#", "Ruby"].map((lang, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`lang-${index + 1}`} value={lang} onClick={handleCheckboxChange} />
-                <Label htmlFor={`lang-${index + 1}`}>{lang}</Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Databases</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Redis", "Cassandra"].map((db, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`db-${index + 1}`} value={db} onClick={handleCheckboxChange} />
-                <Label htmlFor={`db-${index + 1}`}>{db}</Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Frameworks</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {["React", "Angular", "Vue.js", "Django", "Flask", "Ruby on Rails"].map((framework, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`framework-${index + 1}`} value={framework} onClick={handleCheckboxChange} />
-                <Label htmlFor={`framework-${index + 1}`}>{framework}</Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-        </div>
-      </div>
-      <div className="mt-12">
-        <Button onClick={handleFormSubmit} disabled={loading}>
-          {loading ? "Generating..." : "Generate Random Ideas"}
-        </Button>
-      </div>
+      </form>
       {loading && (
         <div className="text-center mt-4 text-gray-600">Generating ideas...</div>
       )}
@@ -242,5 +211,30 @@ function Generate() {
     </div>
   );
 }
+
+interface CheckboxGroupProps {
+  title: string;
+  options: string[];
+  onChange: (event:any) => void;
+}
+
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, options, onChange }) => (
+  <div>
+    <h2 className="text-2xl font-bold mb-4">{title}</h2>
+    <div className="grid grid-cols-2 gap-4">
+      {options.map((option, index) => (
+        <div key={index} className="flex items-center space-x-2">
+          <Checkbox
+            id={`${title.toLowerCase().replace(/ /g, "-")}-${index + 1}`}
+            value={option}
+            onClick={onChange}
+          />
+          <Label htmlFor={`${title.toLowerCase().replace(/ /g, "-")}-${index + 1}`}>{option}</Label>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 
 export default Generate;
