@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import model from "@/lib/googleClient";
 
 function Generate() {
   const [checkedItems, setCheckedItems] = useState([]);
+  const [generatedIdea, setGeneratedIdea] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   
   const handleCheckboxChange = (event:any) => {
@@ -14,9 +17,80 @@ function Generate() {
       setCheckedItems((prevCheckedItems):any => [...prevCheckedItems, value]);
     
   };
-  const generateIdeas = () => {
-    console.log("Checked items:", checkedItems);
-    // Your idea generation logic here
+  const handleFormSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const prompt = `Generate an 3 idea for a project involving these technologies only no other techstack should be included and level of difficulty also: ${checkedItems} . The idea should address current market needs, leverage emerging technologies,  include monetization strategy and     include even list of companies that solves this problem and how can you make something different from them. 
+    . Please provide the response in JSON format with title  , description in about 100 words , features with different use cases give in form of
+    {
+        "title": "",
+        "description": "",
+        "features": [
+          {
+            "name": "",
+            "description": "",
+            "use_cases": [
+              ""
+            ]
+          },
+          {
+            "name": "",
+            "description": "",
+            "use_cases": [
+              ""
+            ]
+          },
+          {
+            "name": "",
+            "description": "",
+            "use_cases": [
+              ""
+            ]
+          }
+        ],
+        "monetization_strategy": [
+          "",
+          "",
+          "",
+        ],
+        "competitors": [
+          "",
+          "",
+          "",
+          "",
+        ],
+        "technology_stack": [
+          "",
+          "",
+          "",
+          "",
+        ]
+    }, 
+    
+    `;
+
+    try {
+      setGeneratedIdea(null); // Reset generatedIdea state
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      let text = await response.text();
+
+      // Trim additional ``` characters from the start and end
+      text = text.trim().replace(/^```json\s+|\s+```$/g, "");
+
+      // Parse the JSON string and set generatedIdea state
+      const parsedIdea = JSON.parse(text);
+      setGeneratedIdea(parsedIdea);
+
+     
+      console.log(parsedIdea); // Log the parsed JSON object
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error generating idea:", error);
+    }
   };
 
   return (
@@ -104,8 +178,67 @@ function Generate() {
         </div>
       </div>
       <div className="mt-12">
-        <Button onClick={generateIdeas}>Generate Random Ideas</Button>
+        <Button onClick={handleFormSubmit} disabled={loading}>
+          {loading ? "Generating..." : "Generate Random Ideas"}
+        </Button>
       </div>
+      {loading && (
+        <div className="text-center mt-4 text-gray-600">Generating ideas...</div>
+      )}
+      {generatedIdea && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Generated Ideas:</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {generatedIdea.map((idea: { title: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; description: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; features: any[]; monetization_strategy: any[]; competitors: any[]; technology_stack: any[]; }, index: React.Key | null | undefined) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4 shadow-md">
+                <h3 className="text-lg font-bold mb-2">{idea.title}</h3>
+                <p className="text-gray-600 mb-2">{idea.description}</p>
+                <div>
+                  <h4 className="text-md font-semibold mb-2">Features:</h4>
+                  <ul className=" list-inside">
+                    {idea.features.map((feature: { name: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; description: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; use_cases: any[]; }, fIndex: React.Key | null | undefined) => (
+                      <li key={fIndex} className="mb-2">
+                        <p className="font-semibold">{feature.name}</p>
+                        <p className="text-gray-600">{feature.description}</p>
+                        <ul className="list-disc list-inside">
+                          {feature.use_cases.map((useCase: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, uIndex: React.Key | null | undefined) => (
+                            <li key={uIndex} className="text-sm text-gray-600">{useCase}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold mb-2">Monetization Strategy:</h4>
+                  <ul className="list-disc list-inside">
+                    {idea.monetization_strategy.map((strategy: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, sIndex: React.Key | null | undefined) => (
+                      <li key={sIndex} className="text-gray-600">{strategy}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold mb-2">Competitors:</h4>
+                  <ul className="list-disc list-inside">
+                    {idea.competitors.map((competitor: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, cIndex: React.Key | null | undefined) => (
+                      <li key={cIndex} className="text-gray-600">{competitor}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold mb-2">Technology Stack:</h4>
+                  <ul className="list-disc list-inside">
+                    {idea.technology_stack.map((tech: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, tIndex: React.Key | null | undefined) => (
+                      <li key={tIndex} className="text-gray-600">{tech}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+       
     </div>
   );
 }

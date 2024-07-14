@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React from "react";
 import img from "@/public/image.jpg";
+import img1 from "@/public/img.svg";
+
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -65,7 +67,7 @@ async function Home() {
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
             <Image
-              src={img}
+              src={img1}
               width="550"
               height="350"
               alt="Hero"
